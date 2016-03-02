@@ -31,7 +31,7 @@ public class pauseRigidBody : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(keys.pause))
+        if(Input.GetKeyDown(keys.pause)&&game.gameOngoing)
         {
             switchPaused();
         }

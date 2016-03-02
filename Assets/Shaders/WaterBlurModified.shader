@@ -18,7 +18,7 @@ CGPROGRAM
 #pragma vertex vert
 #pragma fragment frag 
 
-#pragma target 3.0
+#pragma target 2.0
             sampler2D _GrabTexture : register(s0);
             float _blurSizeXY;
 
@@ -102,7 +102,7 @@ ENDCG
 CGPROGRAM
 #pragma vertex vert
 #pragma fragment frag 
-#pragma target 3.0
+#pragma target 2.0
 
             sampler2D _GrabTexture : register(s0);
             float _blurSizeXY;
