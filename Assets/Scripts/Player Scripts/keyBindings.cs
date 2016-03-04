@@ -15,8 +15,8 @@ public class keyBindings : MonoBehaviour {
     public KeyCode accelLeft;
     public KeyCode accelRight;
     public KeyCode shoot;
-    public KeyCode dodgeLeft;
-    public KeyCode dodgeRight;
+    //public KeyCode dodgeLeft;
+    //public KeyCode dodgeRight;
 
     public KeyCode switchCam;
     public KeyCode switchWeapon;

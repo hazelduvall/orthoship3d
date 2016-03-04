@@ -21,8 +21,8 @@ public class keyShoot : MonoBehaviour {
     */
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-        if(!game.paused)
+	void Update () {
+        if(!game.paused&&game.gameOngoing)
         {
             //Debug.Log(Input.GetKeyDown(keys.aim) && keys.toggleAim);
             if (Input.GetKeyDown(keys.aim) && keys.toggleAim)

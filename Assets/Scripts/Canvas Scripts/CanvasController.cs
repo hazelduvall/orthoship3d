@@ -10,6 +10,7 @@ public class CanvasController: MonoBehaviour {
     public int currentCam;
 
     public keyBindings keys;
+    public OptionsController options;
 
     public Sprite[] reticles;
     public Image curReticle;
@@ -22,12 +23,15 @@ public class CanvasController: MonoBehaviour {
     public Text[] myPausedText;
     public Text[] myOptionText;
     public Toggle[] myOptionToggle;
+    public Dropdown[] myOptionDropdown;
 
     public GameStatusController game;
     public bool lastPaused;
     public bool lastMenu;
     public bool lastOptions;
-    public bool options;
+    public bool optionsShown;
+
+    public GameObject myEventSystem;
 
     
     // Use this for initialization
@@ -55,15 +59,15 @@ public class CanvasController: MonoBehaviour {
             game.causeOfDeath = 0;
             game.stopGame();
         }
-        if (lastMenu == !(!game.gameOngoing && !options))
+        if (lastMenu == !(!game.gameOngoing && !optionsShown))
         {
             switchMenu();
         }
-        if(lastPaused == !(game.paused && !options))
+        if(lastPaused == !(game.paused && !optionsShown))
         {
             switchPaused();
         }
-        if(lastOptions != options)
+        if(lastOptions != optionsShown)
         {
             switchOptions();
         }
@@ -73,7 +77,7 @@ public class CanvasController: MonoBehaviour {
     void switchPaused()
     {
         
-        lastPaused = game.paused && !options;
+        lastPaused = game.paused && !optionsShown;
         foreach (Button b in myPausedButtons)
         {
             b.enabled = lastPaused;
@@ -90,7 +94,7 @@ public class CanvasController: MonoBehaviour {
     void switchMenu()
     {
         
-        lastMenu = !game.gameOngoing && !options;
+        lastMenu = !game.gameOngoing && !optionsShown;
         foreach (Button b in myMenuButtons)
         {
             b.enabled = lastMenu;
@@ -116,11 +120,16 @@ public class CanvasController: MonoBehaviour {
 
     void switchOptions()
     {
-        lastOptions = options;
+        lastOptions = optionsShown;
         foreach (Button b in myOptionButtons)
         {
+            //b.gameObject.SetActive(lastOptions);
             b.enabled = lastOptions;
             b.gameObject.GetComponent<Image>().enabled = lastOptions;
+            if(b.gameObject.GetComponent<SetKey>()!= null)
+            {
+                b.gameObject.GetComponent<SetKey>().setText();
+            }
         }
         foreach (Text t in myOptionText)
         {
@@ -135,23 +144,35 @@ public class CanvasController: MonoBehaviour {
             }
             o.GetComponentInChildren<Text>().enabled = lastOptions;
         }
+        foreach(Dropdown d in myOptionDropdown)
+        {
+            d.enabled = lastOptions;
+            d.gameObject.GetComponent<Image>().enabled = lastOptions;
+            foreach(Image i in d.gameObject.GetComponentsInChildren<Image>())
+            {
+                i.enabled = lastOptions;
+            }
+            d.gameObject.GetComponentInChildren<Text>().enabled = lastOptions;
+        }
     }
     public void setOptionsTrue()
     {
-        options = true;
+        optionsShown = true;
         readOptions();
     }
     public void setOptionsFalse()
     {
-        options = false;
+        optionsShown = false;
         game.causeOfDeath = 0;
-    }
-    public void writeOptions()
-    {
-        keys.toggleAim = myOptionToggle[0].isOn;
     }
     public void readOptions()
     {
         myOptionToggle[0].isOn = keys.toggleAim;
+        options.readMovementKeys(myOptionDropdown[0]);
+        options.readLookKeys(myOptionDropdown[1]);
+    }
+    public void deselect()
+    {
+        myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
     }
 }
